@@ -36,10 +36,28 @@ class View:
         self.txt_titolo = ft.Text(value="Biblioteche di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+        self.dd_biblioteca=ft.Dropdown(
+            label='Biblioteca',
+            hint_text="Seleziona una biblioteca",
+            width=300,
+            on_select=self.controller.read_biblioteca
+        )
+
+        self.dd_genere=ft.Dropdown(
+            label='Genere',
+            hint_text="Seleziona genere",
+            width=300,
+            on_select=self.controller.read_genere
+        )
+
+        self.btn_mostra=ft.Button(
+            content=ft.Text('Mostra Libri'),
+            width=300,
+            on_click=self.controller.handle_mostra_libri
+        )
 
         # Sezione 3: Libri
-        # TODO
+        self.lst_risultati=ft.ListView(expand=1,spacing=5)
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,14 +71,19 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            ft.Row([self.dd_biblioteca, self.dd_genere], alignment=ft.MainAxisAlignment.CENTER),
+            ft.Row([self.btn_mostra], alignment=ft.MainAxisAlignment.CENTER),
+            ft.Divider(),
 
             # Sezione 3: Libri
-            # TODO
+            self.lst_risultati
         )
 
         self.page.scroll = "adaptive"
         self.page.update()
+
+        if self.controller:
+            self.controller.popola_dropdown()
 
     def cambia_tema(self, e):
         """ Cambia tema scuro/chiaro """
